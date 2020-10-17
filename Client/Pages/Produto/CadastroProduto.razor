@@ -1,0 +1,49 @@
+@page  "/Produto/CadastroJogos"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro de Jogos</h4>
+    <div class="card-body">
+        <EditForm Model="@Joguinho" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <div class="form-row">
+                <div class="form-group col-5">
+                    <label>ID</label>
+                    <InputNumber @bind-Value="Joguinho.ID" class="form-control" />
+                    <ValidationMessage For="@(() => Joguinho.ID)" />
+                </div>
+                <div class="form-group col-5">
+                    <label>Nome</label>
+                    <InputText @bind-Value="Joguinho.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => Joguinho.Nome)" />
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Jogo Joguinho = new Jogo();
+    private EditContext editContext { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        //Enviar dados para o Controller no Backend
+        var teste = await Http.PostAsJsonAsync("Jogo/Create", Joguinho);
+        NavigationManager.NavigateTo("Produto/ListJogos");
+
+    }
+    private void HandleReset()
+    {
+        Joguinho = new Jogo();
+        editContext = new EditContext(Joguinho);
+    }
+
+    
+}
