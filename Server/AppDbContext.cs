@@ -12,6 +12,15 @@ namespace Desafio_CRUD.Server
         public DbSet<Jogo> Jogos { get; set; }
         public DbSet<Plataforma> Plataformas { get; set; }
 
-        public DbSet<Plataforma> teste { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JogoGenero>().HasKey(t => new {t.JogoID, t.GeneroID});
+
+            modelBuilder.Entity<JogoGenero>().HasOne(pt => pt.Jogo).WithMany(p => p.JogoGeneros)
+            .HasForeignKey(pt => pt.JogoID);
+
+            modelBuilder.Entity<JogoGenero>().HasOne(pt => pt.Genero).WithMany(t => t.JogoGeneros)
+            .HasForeignKey(pt => pt.GeneroID);
+        }
     }
 }

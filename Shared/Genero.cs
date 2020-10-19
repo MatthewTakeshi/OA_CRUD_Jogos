@@ -12,7 +12,8 @@ namespace Desafio_CRUD.Shared
         public int ID { get; set; }
         [Required (ErrorMessage = "Nome é obrigatório")]
         public string Nome { get; set; }
-        public int Jogo_ID { get; set; }
-        public Jogo Jogo { get; set; }
+        public List<JogoGenero> JogoGeneros{ get; set; }
+        //public object JogoGenero { get; set; }
+
     }
 }

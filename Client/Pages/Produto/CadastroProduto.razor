@@ -9,6 +9,12 @@
         <EditForm Model="@Joguinho" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
             <DataAnnotationsValidator></DataAnnotationsValidator>
             <div class="form-row">
+                    <!--<InputSelect ID="ID" @bind-Value="GeneroList">
+                        @foreach (var item in GeneroList)
+                        {
+                            <option value="@item.ID">@item.Nome</option>
+                        }
+                    </InputSelect>!-->
                 <div class="form-group col-5">
                     <label>ID</label>
                     <InputNumber @bind-Value="Joguinho.ID" class="form-control" />
@@ -19,6 +25,13 @@
                     <InputText @bind-Value="Joguinho.Nome" class="form-control" />
                     <ValidationMessage For="@(() => Joguinho.Nome)" />
                 </div>
+                    <InputSelect ID="ID" @bind-Value="Joguinho.PlataformaID">
+                        @foreach (var item in PlataformaList)
+                        {
+                            <option value="@item.ID">@item.Nome</option>
+                        }
+                    </InputSelect>
+                    
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary mr-1">Salvar</button>
@@ -29,8 +42,26 @@
 </div>
 
 @code {
+    private List<Genero> GeneroList = new List<Genero>();
+    private JogoGenero JogoGenerinho = new JogoGenero();
+    private List<Plataforma> PlataformaList = new List<Plataforma>();
     private Jogo Joguinho = new Jogo();
+    //private Plataforma Plataforminha = new Plataforma();
     private EditContext editContext { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var Plataformas = await Http.GetFromJsonAsync<List<Plataforma>>("/Plataforma/List");
+        foreach (var item in Plataformas)
+        {
+            PlataformaList.Add(item);
+        }
+        //var Generos = await Http.GetFromJsonAsync<List<Genero>>("/Genero/List");
+        //foreach (var item in Generos)
+        //{
+            //GeneroList.Add(item);
+        //}
+    }
+
 
     private async Task HandleValidSubmit()
     {

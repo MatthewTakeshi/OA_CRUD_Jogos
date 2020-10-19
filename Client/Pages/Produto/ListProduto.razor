@@ -9,19 +9,21 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">Genero</th>
                 <th scope="col">Nome do Jogo</th>
+                <th scope="col">Plataforma do Jogo</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in JogoList)
             {
             <tr>
-                <td>@item.ID</td>
+                <td>@item.Nome</td>
+                <td>@item.Nome</td>
                 <td>@item.Nome</td>
                 <td>
-                    <a href="/Produto/EditJogos/@item.ID.ToString()" ><button class="btn btn-success">Editar</button></a>
-                    <button class="btn btn-danger" @onclick="@(() => Delete_Uma_Linha(item.ID))">Deletar</button>
+                    <a href="/Produto/EditJogos/@item.Nome.ToString()" ><button class="btn btn-success">Editar</button></a>
+                    <button class="btn btn-danger" @onclick="@(() => Delete_Uma_Linha(@item.ID))">Deletar</button>
                 </td>
             </tr>
             }
@@ -33,25 +35,26 @@
 
     private List<Genero> GeneroList = new List<Genero>();
     private List<Jogo> JogoList = new List<Jogo>();
+    private List<JogoGenero> JogoGeneroList = new List<JogoGenero>();
     private List<Plataforma> PlataformaList = new List<Plataforma>();
 
     protected override async Task OnInitializedAsync()
     {
-        /*var Generos = await Http.GetFromJsonAsync<List<Genero>>("/Genero/List");
+        var Generos = await Http.GetFromJsonAsync<List<Genero>>("/Genero/List");
         foreach (var item in Generos)
         {
             GeneroList.Add(item);
-        }*/
+        }
         var Jogos = await Http.GetFromJsonAsync<List<Jogo>>("/Jogo/List");
         foreach (var item in Jogos)
         {
             JogoList.Add(item);
         }
-        /*var Plataformas = await Http.GetFromJsonAsync<List<Plataforma>>("/Plataforma/List");
+        var Plataformas = await Http.GetFromJsonAsync<List<Plataforma>>("/Plataforma/List");
         foreach (var item in Plataformas)
         {
             PlataformaList.Add(item);
-        }*/
+        }
     }
 
     private async Task Delete_Uma_Linha(int itemID)

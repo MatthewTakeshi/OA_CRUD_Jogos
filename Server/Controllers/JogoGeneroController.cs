@@ -10,11 +10,11 @@ using System.Collections.Generic;
 
 [ApiController]
 [Route("[controller]")]
-public class JogoController : Controller
+public class JogoGeneroController : Controller
 {
     private readonly AppDbContext db;
     
-    public JogoController(AppDbContext db)
+    public JogoGeneroController(AppDbContext db)
     {
         this.db = db;
     }
@@ -55,7 +55,6 @@ public class JogoController : Controller
         }
         catch(Exception e)
         {
-            Console.WriteLine("TESTE");
             return View(e);
         }
     }

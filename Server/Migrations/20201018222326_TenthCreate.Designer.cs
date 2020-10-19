@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Desafio_CRUD.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201017201305_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20201018222326_TenthCreate")]
+    partial class TenthCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,9 +43,29 @@ namespace Desafio_CRUD.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("PlataformaID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
+                    b.HasIndex("PlataformaID");
+
                     b.ToTable("Jogos");
+                });
+
+            modelBuilder.Entity("Desafio_CRUD.Shared.JogoGenero", b =>
+                {
+                    b.Property<int>("JogoID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GeneroID")
+                        .HasColumnType("int");
+
+                    b.HasKey("JogoID", "GeneroID");
+
+                    b.HasIndex("GeneroID");
+
+                    b.ToTable("JogoGenero");
                 });
 
             modelBuilder.Entity("Desafio_CRUD.Shared.Plataforma", b =>
@@ -61,6 +81,30 @@ namespace Desafio_CRUD.Server.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Plataformas");
+                });
+
+            modelBuilder.Entity("Desafio_CRUD.Shared.Jogo", b =>
+                {
+                    b.HasOne("Desafio_CRUD.Shared.Plataforma", "Plataforma")
+                        .WithMany("Jogos")
+                        .HasForeignKey("PlataformaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Desafio_CRUD.Shared.JogoGenero", b =>
+                {
+                    b.HasOne("Desafio_CRUD.Shared.Genero", "Genero")
+                        .WithMany("JogoGeneros")
+                        .HasForeignKey("GeneroID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Desafio_CRUD.Shared.Jogo", "Jogo")
+                        .WithMany("JogoGeneros")
+                        .HasForeignKey("JogoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
